@@ -1,0 +1,478 @@
+<!doctype html>
+<html lang="zh-CN" data-locale="zh" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="蔺嵩钦 / Songqin Lin — quantitative research, futures strategy and trading systems.">
+  <title>蔺嵩钦 · Quant Research &amp; Trading Systems</title>
+  <style>
+    :root {
+      --bg: #0a1015;
+      --bg-soft: #0e171e;
+      --panel: rgba(16, 27, 34, .84);
+      --panel-solid: #111d25;
+      --panel-strong: #16252d;
+      --line: rgba(173, 214, 208, .17);
+      --line-strong: rgba(173, 214, 208, .34);
+      --ink: #eff7f2;
+      --muted: #94a9ad;
+      --muted-strong: #c4d3cf;
+      --lime: #c0ed75;
+      --teal: #73d8ca;
+      --orange: #ffb86e;
+      --shadow: 0 28px 90px rgba(0, 0, 0, .28);
+      --radius-lg: 26px;
+      --radius-md: 17px;
+      --radius-sm: 10px;
+      --max: 1180px;
+    }
+
+    html[data-theme="light"] {
+      --bg: #f0f5f0;
+      --bg-soft: #e8f0ec;
+      --panel: rgba(255, 255, 255, .78);
+      --panel-solid: #fbfdfb;
+      --panel-strong: #edf5f0;
+      --line: rgba(22, 55, 57, .14);
+      --line-strong: rgba(22, 55, 57, .3);
+      --ink: #102126;
+      --muted: #597174;
+      --muted-strong: #355154;
+      --lime: #629b1c;
+      --teal: #168b83;
+      --orange: #b86a1b;
+      --shadow: 0 28px 90px rgba(48, 83, 71, .12);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 12% 5%, rgba(115, 216, 202, .11), transparent 29rem),
+        radial-gradient(circle at 88% 25%, rgba(192, 237, 117, .09), transparent 25rem),
+        var(--bg);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      line-height: 1.6;
+      min-width: 320px;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: .25;
+      background-image: linear-gradient(rgba(173, 214, 208, .05) 1px, transparent 1px), linear-gradient(90deg, rgba(173, 214, 208, .05) 1px, transparent 1px);
+      background-size: 48px 48px;
+      mask-image: linear-gradient(to bottom, black, transparent 70%);
+      z-index: -1;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; }
+    .skip-link { position: absolute; left: 1rem; top: -4rem; padding: .65rem .9rem; border-radius: 9px; background: var(--lime); color: #132018; z-index: 20; }
+    .skip-link:focus { top: 1rem; }
+    .page-shell { width: min(calc(100% - 40px), var(--max)); margin: 0 auto; }
+    .topbar { position: sticky; top: 0; z-index: 10; backdrop-filter: blur(18px); background: color-mix(in srgb, var(--bg) 86%, transparent); border-bottom: 1px solid var(--line); }
+    .topbar-inner { width: min(calc(100% - 40px), var(--max)); min-height: 72px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 1.25rem; }
+    .brand { display: inline-flex; align-items: center; gap: .75rem; font-size: .78rem; font-weight: 800; letter-spacing: .13em; text-transform: uppercase; }
+    .brand-mark { display: grid; place-items: center; width: 35px; height: 35px; border: 1px solid var(--line-strong); border-radius: 10px; background: linear-gradient(145deg, var(--lime), var(--teal)); color: #10241e; font-size: .75rem; letter-spacing: -.05em; }
+    .nav { display: flex; align-items: center; gap: 1.25rem; color: var(--muted); font-size: .83rem; }
+    .nav a { transition: color .2s ease; }
+    .nav a:hover, .nav a:focus-visible { color: var(--ink); }
+    .toolbar { display: flex; gap: .45rem; }
+    .icon-button, .lang-button { display: inline-flex; align-items: center; justify-content: center; gap: .38rem; border: 1px solid var(--line); border-radius: 999px; background: transparent; color: var(--muted-strong); cursor: pointer; min-height: 34px; padding: 0 .75rem; transition: border-color .2s ease, color .2s ease, transform .2s ease; }
+    .icon-button { width: 34px; padding: 0; font-size: .95rem; }
+    .icon-button:hover, .lang-button:hover { border-color: var(--line-strong); color: var(--ink); transform: translateY(-1px); }
+
+    .hero { min-height: calc(100vh - 72px); padding: 7.4rem 0 5rem; display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(320px, .9fr); gap: clamp(3rem, 8vw, 7.5rem); align-items: center; }
+    .eyebrow, .kicker { display: inline-flex; align-items: center; gap: .55rem; color: var(--teal); font-size: .75rem; font-weight: 800; letter-spacing: .17em; text-transform: uppercase; }
+    .eyebrow::before { content: ""; width: 28px; height: 1px; background: var(--teal); }
+    .hero h1 { margin: 1.15rem 0 .9rem; font-size: clamp(3.6rem, 8vw, 7.5rem); line-height: .92; letter-spacing: -.075em; font-weight: 750; }
+    .hero h1 span { display: block; }
+    .hero h1 .latin { color: var(--lime); font-size: .56em; letter-spacing: -.055em; margin-top: .35em; }
+    .hero-lede { max-width: 640px; color: var(--muted-strong); font-size: clamp(1rem, 1.6vw, 1.23rem); line-height: 1.8; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 2rem; }
+    .button { display: inline-flex; align-items: center; justify-content: center; gap: .55rem; padding: .76rem 1.05rem; border-radius: 999px; border: 1px solid var(--line); color: var(--ink); background: var(--panel); font-size: .86rem; font-weight: 700; cursor: pointer; transition: transform .2s ease, border-color .2s ease, background .2s ease; }
+    .button:hover, .button:focus-visible { transform: translateY(-2px); border-color: var(--line-strong); }
+    .button.primary { background: var(--lime); border-color: var(--lime); color: #17241a; }
+    .button.ghost { background: transparent; }
+    .button .arrow { font-size: 1.1em; }
+    .availability { display: flex; align-items: center; gap: .55rem; margin-top: 2.2rem; color: var(--muted); font-size: .77rem; letter-spacing: .04em; }
+    .availability::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--lime); box-shadow: 0 0 0 5px color-mix(in srgb, var(--lime) 16%, transparent); }
+
+    .hero-panel { position: relative; padding: 1.25rem; border: 1px solid var(--line); border-radius: var(--radius-lg); background: linear-gradient(145deg, color-mix(in srgb, var(--panel-solid) 96%, transparent), color-mix(in srgb, var(--panel-strong) 80%, transparent)); box-shadow: var(--shadow); overflow: hidden; }
+    .hero-panel::before { content: ""; position: absolute; width: 210px; height: 210px; right: -75px; top: -95px; border-radius: 50%; background: var(--lime); opacity: .11; filter: blur(2px); }
+    .panel-meta { display: flex; align-items: center; justify-content: space-between; gap: 1rem; color: var(--muted); font-size: .71rem; letter-spacing: .12em; text-transform: uppercase; }
+    .panel-meta strong { color: var(--lime); font-weight: 700; }
+    .profile-row { display: flex; align-items: center; gap: 1rem; margin: 1.2rem 0 1.45rem; }
+    .profile-photo { width: 84px; height: 108px; object-fit: cover; border-radius: 14px; border: 1px solid var(--line-strong); background: var(--panel-strong); }
+    .profile-copy h2 { margin: 0 0 .25rem; font-size: 1.35rem; letter-spacing: -.04em; }
+    .profile-copy p { margin: 0; color: var(--muted); font-size: .82rem; line-height: 1.55; }
+    .signal-box { padding: .95rem 1rem; border: 1px solid var(--line); border-radius: 13px; background: color-mix(in srgb, var(--bg-soft) 75%, transparent); }
+    .signal-box .label { color: var(--muted); font-size: .7rem; letter-spacing: .12em; text-transform: uppercase; }
+    .signal-line { display: flex; align-items: center; gap: .75rem; margin-top: .55rem; color: var(--lime); font-family: "SFMono-Regular", Consolas, monospace; font-size: .86rem; }
+    .signal-line svg { width: 100%; height: 50px; }
+    .signal-line polyline { fill: none; stroke: var(--lime); stroke-width: 2.1; stroke-linecap: round; stroke-linejoin: round; }
+    .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: .55rem; margin-top: .7rem; }
+    .stat { padding: .78rem .7rem; border-top: 1px solid var(--line); }
+    .stat strong { display: block; color: var(--ink); font-size: 1.15rem; letter-spacing: -.04em; }
+    .stat span { display: block; margin-top: .2rem; color: var(--muted); font-size: .65rem; line-height: 1.35; }
+
+    .section { padding: 6.2rem 0; border-top: 1px solid var(--line); }
+    .section-head { display: flex; align-items: end; justify-content: space-between; gap: 2rem; margin-bottom: 2.2rem; }
+    .section-title { margin: .65rem 0 0; font-size: clamp(2rem, 4vw, 3.35rem); line-height: 1; letter-spacing: -.065em; }
+    .section-intro { max-width: 410px; margin: 0; color: var(--muted); font-size: .93rem; line-height: 1.75; }
+    .two-col { display: grid; grid-template-columns: .72fr 1.28fr; gap: clamp(2rem, 7vw, 7.5rem); }
+    .focus-list { display: grid; gap: .85rem; margin: 0; padding: 0; list-style: none; }
+    .focus-list li { display: flex; align-items: flex-start; gap: .75rem; padding: .9rem 0; border-bottom: 1px solid var(--line); color: var(--muted-strong); font-size: .92rem; }
+    .focus-list li::before { content: "+"; color: var(--lime); font-family: "SFMono-Regular", Consolas, monospace; }
+    .about-copy { color: var(--muted-strong); font-size: 1.1rem; line-height: 1.85; }
+    .about-copy p { margin: 0 0 1.25rem; }
+    .tag-row { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 1.75rem; }
+    .tag { padding: .4rem .7rem; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); font-size: .72rem; }
+
+    .education-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+    .edu-card { position: relative; padding: 1.35rem; border: 1px solid var(--line); border-radius: var(--radius-md); background: var(--panel); overflow: hidden; }
+    .edu-card::after { content: "EDU"; position: absolute; right: 1.2rem; bottom: .7rem; color: var(--line-strong); font: 800 3rem/.9 "SFMono-Regular", Consolas, monospace; letter-spacing: -.1em; }
+    .edu-card .date { color: var(--lime); font: 700 .72rem "SFMono-Regular", Consolas, monospace; letter-spacing: .05em; }
+    .edu-card h3 { margin: .7rem 0 .35rem; font-size: 1.1rem; letter-spacing: -.035em; }
+    .edu-card p { max-width: 80%; margin: 0; color: var(--muted); font-size: .82rem; }
+    .edu-card ul { position: relative; z-index: 1; margin: .9rem 0 0; padding-left: 1.1rem; color: var(--muted-strong); font-size: .78rem; }
+    .edu-card li + li { margin-top: .4rem; }
+
+    .filter-bar { display: flex; flex-wrap: wrap; gap: .5rem; }
+    .filter { border: 1px solid var(--line); border-radius: 999px; padding: .45rem .75rem; background: transparent; color: var(--muted); font-size: .73rem; cursor: pointer; transition: .2s ease; }
+    .filter:hover, .filter.active { color: #122219; background: var(--lime); border-color: var(--lime); }
+    .timeline { position: relative; display: grid; gap: 1rem; }
+    .timeline::before { content: ""; position: absolute; left: 18px; top: 24px; bottom: 24px; width: 1px; background: var(--line); }
+    .timeline-item { position: relative; padding-left: 58px; transition: opacity .25s ease, transform .25s ease; }
+    .timeline-item.is-hidden { display: none; }
+    .timeline-dot { position: absolute; top: 23px; left: 12px; width: 13px; height: 13px; border: 3px solid var(--bg); border-radius: 50%; background: var(--teal); box-shadow: 0 0 0 1px var(--teal); }
+    .timeline-card { padding: 1.25rem 1.35rem 1.35rem; border: 1px solid var(--line); border-radius: var(--radius-md); background: var(--panel); }
+    .timeline-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; }
+    .timeline-company { margin: 0; font-size: 1.1rem; letter-spacing: -.035em; }
+    .timeline-role { margin: .27rem 0 0; color: var(--muted); font-size: .78rem; }
+    .timeline-date { flex: 0 0 auto; color: var(--lime); font: 700 .7rem "SFMono-Regular", Consolas, monospace; letter-spacing: .03em; text-align: right; }
+    .timeline-badge { display: inline-flex; margin-top: .75rem; padding: .26rem .5rem; border: 1px solid color-mix(in srgb, var(--lime) 45%, transparent); border-radius: 6px; color: var(--lime); font-size: .63rem; letter-spacing: .1em; text-transform: uppercase; }
+    .work-list { margin: 1.15rem 0 0; padding: 0; list-style: none; display: grid; gap: .78rem; }
+    .work-list li { position: relative; padding-left: 1.05rem; color: var(--muted-strong); font-size: .85rem; line-height: 1.68; }
+    .work-list li::before { content: ""; position: absolute; left: 0; top: .7em; width: 5px; height: 5px; border-radius: 50%; background: var(--teal); }
+    .work-list strong { color: var(--ink); font-weight: 700; }
+    .metric-strip { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 1rem; }
+    .metric { padding: .42rem .62rem; border-radius: 8px; background: color-mix(in srgb, var(--teal) 10%, transparent); color: var(--teal); font: 700 .7rem "SFMono-Regular", Consolas, monospace; }
+
+    .project-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .project-card { display: flex; flex-direction: column; min-height: 285px; padding: 1.35rem; border: 1px solid var(--line); border-radius: var(--radius-md); background: linear-gradient(145deg, var(--panel), color-mix(in srgb, var(--panel-strong) 72%, transparent)); }
+    .project-card .project-index { color: var(--lime); font: 700 .72rem "SFMono-Regular", Consolas, monospace; }
+    .project-card h3 { margin: .8rem 0 .45rem; font-size: 1.4rem; letter-spacing: -.05em; }
+    .project-card p { margin: 0; color: var(--muted); font-size: .86rem; line-height: 1.7; }
+    .project-card ul { margin: 1.1rem 0 0; padding-left: 1.1rem; color: var(--muted-strong); font-size: .8rem; }
+    .project-card li + li { margin-top: .45rem; }
+    .project-card .tag-row { margin-top: auto; padding-top: 1.25rem; }
+    .numbers { display: grid; grid-template-columns: repeat(3, 1fr); gap: .65rem; margin-top: 1.5rem; }
+    .number { padding: .8rem; border: 1px solid var(--line); border-radius: 10px; }
+    .number strong { display: block; color: var(--lime); font-size: 1.3rem; letter-spacing: -.06em; }
+    .number span { display: block; margin-top: .2rem; color: var(--muted); font-size: .65rem; }
+
+    .skills-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; }
+    .skill-card { padding: 1.25rem; border-top: 1px solid var(--line-strong); }
+    .skill-card .skill-no { color: var(--lime); font: 700 .68rem "SFMono-Regular", Consolas, monospace; }
+    .skill-card h3 { margin: .55rem 0 .45rem; font-size: 1.1rem; }
+    .skill-card p { margin: 0; color: var(--muted); font-size: .82rem; line-height: 1.7; }
+    .skill-chips { display: flex; flex-wrap: wrap; gap: .4rem; margin-top: .85rem; }
+    .skill-chip { padding: .32rem .5rem; border-radius: 6px; background: var(--panel); color: var(--muted-strong); font: .7rem "SFMono-Regular", Consolas, monospace; }
+
+    .contact { position: relative; padding: 4.8rem 0 6rem; overflow: hidden; }
+    .contact::before { content: ""; position: absolute; inset: 0 -50vw; z-index: -1; background: linear-gradient(105deg, color-mix(in srgb, var(--teal) 11%, transparent), transparent 62%); border-top: 1px solid var(--line); }
+    .contact-content { display: flex; align-items: end; justify-content: space-between; gap: 2rem; }
+    .contact h2 { max-width: 620px; margin: .7rem 0 0; font-size: clamp(2.5rem, 6vw, 5.8rem); line-height: .94; letter-spacing: -.08em; }
+    .contact p { max-width: 370px; margin: 0; color: var(--muted); font-size: .88rem; line-height: 1.75; }
+    .contact-actions { display: flex; flex-wrap: wrap; gap: .7rem; margin-top: 1.7rem; }
+    footer { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1.2rem 0 2rem; color: var(--muted); font-size: .7rem; border-top: 1px solid var(--line); }
+    footer .mono { font-family: "SFMono-Regular", Consolas, monospace; }
+    .reveal { opacity: 0; transform: translateY(16px); transition: opacity .65s ease, transform .65s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+    .locale-en { display: none; }
+    html[data-locale="en"] .locale-zh { display: none; }
+    html[data-locale="en"] .locale-en { display: inline; }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+    @media (max-width: 900px) {
+      .nav { display: none; }
+      .hero { min-height: auto; padding: 5.8rem 0 4.2rem; grid-template-columns: 1fr; gap: 3.3rem; }
+      .hero-panel { max-width: 600px; }
+      .two-col { grid-template-columns: 1fr; gap: 2rem; }
+      .section { padding: 4.8rem 0; }
+      .skills-grid { grid-template-columns: 1fr 1fr; }
+      .contact-content { align-items: flex-start; flex-direction: column; }
+    }
+    @media (max-width: 620px) {
+      .page-shell, .topbar-inner { width: min(calc(100% - 28px), var(--max)); }
+      .topbar-inner { min-height: 62px; }
+      .brand { font-size: .67rem; }
+      .hero { padding-top: 4.5rem; }
+      .hero h1 { font-size: clamp(3.4rem, 18vw, 5.4rem); }
+      .hero-panel { padding: 1rem; }
+      .stat-grid { grid-template-columns: repeat(2, 1fr); }
+      .section-head { display: block; }
+      .section-intro { margin-top: 1.2rem; }
+      .education-grid, .project-grid, .skills-grid { grid-template-columns: 1fr; }
+      .timeline-item { padding-left: 30px; }
+      .timeline::before { left: 5px; }
+      .timeline-dot { left: 0; }
+      .timeline-top { display: block; }
+      .timeline-date { display: block; margin-top: .6rem; text-align: left; }
+      .numbers { grid-template-columns: 1fr; }
+      footer { display: block; }
+      footer span { display: block; margin-top: .4rem; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; }
+      .reveal { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main"><span class="locale-zh">跳到正文</span><span class="locale-en">Skip to content</span></a>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="#top" aria-label="Songqin Lin home">
+        <span class="brand-mark">SL</span>
+        <span>Quant / Research</span>
+      </a>
+      <nav class="nav" aria-label="Primary navigation">
+        <a href="#about"><span class="locale-zh">关于</span><span class="locale-en">About</span></a>
+        <a href="#education"><span class="locale-zh">教育</span><span class="locale-en">Education</span></a>
+        <a href="#experience"><span class="locale-zh">经历</span><span class="locale-en">Experience</span></a>
+        <a href="#projects"><span class="locale-zh">项目</span><span class="locale-en">Projects</span></a>
+        <a href="#contact"><span class="locale-zh">联系</span><span class="locale-en">Contact</span></a>
+      </nav>
+      <div class="toolbar">
+        <button class="lang-button" id="langToggle" type="button" aria-label="Switch language">EN / 中</button>
+        <button class="icon-button" id="themeToggle" type="button" aria-label="Toggle color theme" title="Toggle color theme">◐</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <div class="page-shell">
+      <section class="hero" id="top">
+        <div class="hero-copy reveal">
+          <div class="eyebrow"><span class="locale-zh">量化研究 · 交易系统</span><span class="locale-en">Quant research · trading systems</span></div>
+          <h1><span class="locale-zh">蔺嵩钦</span><span class="locale-en">Songqin Lin</span><span class="latin">Songqin Lin / SL</span></h1>
+          <p class="hero-lede locale-zh">把市场结构拆成可验证的信号，把信号做成可运行的系统。专注商品期货、股指期货与中频因子研究。</p>
+          <p class="hero-lede locale-en">I turn market structure into testable signals, then ship those signals as robust, observable systems. Focused on commodity futures, index futures and medium-frequency research.</p>
+          <div class="hero-actions">
+            <a class="button primary" href="#experience"><span class="locale-zh">查看研究经历</span><span class="locale-en">Explore experience</span><span class="arrow">↘</span></a>
+            <a class="button ghost" href="mailto:26210680087@m.fudan.edu.cn"><span class="locale-zh">联系我</span><span class="locale-en">Get in touch</span><span class="arrow">↗</span></a>
+          </div>
+          <div class="availability"><span class="locale-zh">复旦大学金融硕士 · 2026.09 入学</span><span class="locale-en">Finance master’s at Fudan · starting Sep 2026</span></div>
+        </div>
+
+        <aside class="hero-panel reveal" aria-label="Profile overview">
+          <div class="panel-meta"><span>PROFILE / 2026</span><strong>LIVE</strong></div>
+          <div class="profile-row">
+            <img class="profile-photo" src="assets/profile.jpg" alt="蔺嵩钦证件照 / Songqin Lin portrait">
+            <div class="profile-copy">
+              <h2><span class="locale-zh">研究型交易者</span><span class="locale-en">Research-minded builder</span></h2>
+              <p><span class="locale-zh">Python · R · 期货策略 · 端到端交易链路</span><span class="locale-en">Python · R · futures strategy · end-to-end execution</span></p>
+            </div>
+          </div>
+          <div class="signal-box">
+            <div class="label"><span class="locale-zh">研究信号 / 最近读数</span><span class="locale-en">Research signal / latest read</span></div>
+            <div class="signal-line">
+              <span>EDGE</span>
+              <svg viewBox="0 0 230 50" role="img" aria-label="Rising signal line"><polyline points="2,41 22,37 34,40 51,27 70,31 88,15 104,22 122,10 143,17 161,7 180,17 198,11 228,3" /></svg>
+            </div>
+          </div>
+          <div class="stat-grid">
+            <div class="stat"><strong>30+</strong><span><span class="locale-zh">因子类别</span><span class="locale-en">factor classes</span></span></div>
+            <div class="stat"><strong>62</strong><span><span class="locale-zh">商品品种</span><span class="locale-en">commodity products</span></span></div>
+            <div class="stat"><strong>3.81</strong><span><span class="locale-zh">最佳年化 Sharpe</span><span class="locale-en">best annualized Sharpe</span></span></div>
+            <div class="stat"><strong>¥12M</strong><span><span class="locale-zh">策略本金运行</span><span class="locale-en">strategy capital operated</span></span></div>
+          </div>
+        </aside>
+      </section>
+
+      <section class="section" id="about">
+        <div class="section-head reveal">
+          <div><div class="kicker">01 / ABOUT</div><h2 class="section-title"><span class="locale-zh">先理解结构，再追求收益。</span><span class="locale-en">Understand structure.<br>Then pursue returns.</span></h2></div>
+          <p class="section-intro locale-zh">一份简历之外的自我介绍：我喜欢把模糊的交易直觉拆成假设、数据、约束和可复现的结果。</p>
+          <p class="section-intro locale-en">A little beyond the resume: I like turning fuzzy trading intuition into explicit hypotheses, data, constraints and reproducible results.</p>
+        </div>
+        <div class="two-col">
+          <ul class="focus-list reveal">
+            <li><span class="locale-zh">中频因子与订单流</span><span class="locale-en">Medium-frequency factors &amp; order flow</span></li>
+            <li><span class="locale-zh">商品 / 股指期货策略</span><span class="locale-en">Commodity &amp; index futures strategies</span></li>
+            <li><span class="locale-zh">回测、成本与风险控制</span><span class="locale-en">Backtests, costs &amp; risk controls</span></li>
+            <li><span class="locale-zh">稳定可观测的交易系统</span><span class="locale-en">Observable, resilient trading systems</span></li>
+          </ul>
+          <div class="about-copy reveal">
+            <p class="locale-zh">我的工作常常从盘口快照和分钟级行情开始：先定义成交口径，再处理聚合、平滑、去极值与对齐，最后在交易成本、换月、整数手数和执行延迟等现实约束下检验信号。</p>
+            <p class="locale-en">My work often starts with depth snapshots and minute-level market data: define execution assumptions first, then handle aggregation, smoothing, outlier control and alignment, and finally test signals under real constraints such as costs, rollovers, integer sizing and latency.</p>
+            <p class="locale-zh">我也关心研究如何真正落地——从模型输出到资金分配、母单发送、持仓核验、告警和故障熔断，每一个环节都要能解释、能恢复、能复盘。</p>
+            <p class="locale-en">I also care about the last mile: from model outputs to capital allocation, parent-order submission, reconciliation, alerting and fail-closed safeguards. Every link should be explainable, recoverable and reviewable.</p>
+            <div class="tag-row"><span class="tag">market microstructure</span><span class="tag">signal research</span><span class="tag">systems thinking</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="education">
+        <div class="section-head reveal">
+          <div><div class="kicker">02 / EDUCATION</div><h2 class="section-title"><span class="locale-zh">数学训练，金融落地。</span><span class="locale-en">Mathematical training,<br>financial application.</span></h2></div>
+          <p class="section-intro locale-zh">从数学经济到量化投资，持续把理论工具变成可检验的研究流程。</p>
+          <p class="section-intro locale-en">From mathematical economics to quantitative investing, turning theory into testable research workflows.</p>
+        </div>
+        <div class="education-grid">
+          <article class="edu-card reveal">
+            <div class="date">2022.09 — 2026.06 / SHANGHAI</div>
+            <h3><span class="locale-zh">复旦大学 · 经济学院</span><span class="locale-en">Fudan University · School of Economics</span></h3>
+            <p><span class="locale-zh">经济学（数理经济方向） · 本科</span><span class="locale-en">Economics (Mathematical Economics) · Bachelor</span></p>
+            <ul><li><span class="locale-zh">全国大学生数学竞赛上海赛区二等奖；全国大学生数学建模竞赛上海赛区三等奖</span><span class="locale-en">2nd prize, Chinese Mathematics Competition; 3rd prize, Undergraduate Mathematical Contest in Modeling</span></li><li><span class="locale-zh">主修概率论、随机过程、数学分析、机器学习、最优化、深度学习与计量经济学</span><span class="locale-en">Coursework across probability, stochastic processes, analysis, machine learning, optimization, deep learning and econometrics</span></li></ul>
+          </article>
+          <article class="edu-card reveal">
+            <div class="date">2026.09 — 2028.06 / SHANGHAI</div>
+            <h3><span class="locale-zh">复旦大学 · 经济学院</span><span class="locale-en">Fudan University · School of Economics</span></h3>
+            <p><span class="locale-zh">金融（量化投资方向） · 硕士</span><span class="locale-en">Finance (Quantitative Investment) · Master</span></p>
+            <ul><li><span class="locale-zh">将继续深耕资产定价、量化策略与金融数据研究</span><span class="locale-en">Continuing deeper work in asset pricing, systematic strategies and financial data research</span></li><li><span class="locale-zh">语言：中文、英语（托福 110）</span><span class="locale-en">Languages: Mandarin and English (TOEFL 110)</span></li></ul>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" id="experience">
+        <div class="section-head reveal">
+          <div><div class="kicker">03 / EXPERIENCE</div><h2 class="section-title"><span class="locale-zh">把研究做成系统。</span><span class="locale-en">Research that ships.</span></h2></div>
+          <div class="filter-bar" role="group" aria-label="Filter experience"><button class="filter active" type="button" data-filter="all"><span class="locale-zh">全部</span><span class="locale-en">All</span></button><button class="filter" type="button" data-filter="research"><span class="locale-zh">因子研究</span><span class="locale-en">Factors</span></button><button class="filter" type="button" data-filter="strategy"><span class="locale-zh">策略研究</span><span class="locale-en">Strategies</span></button><button class="filter" type="button" data-filter="system"><span class="locale-zh">交易系统</span><span class="locale-en">Systems</span></button></div>
+        </div>
+        <div class="timeline">
+          <article class="timeline-item reveal" data-tags="research strategy system">
+            <span class="timeline-dot" aria-hidden="true"></span>
+            <div class="timeline-card">
+              <div class="timeline-top"><div><h3 class="timeline-company"><span class="locale-zh">上海非凸智能科技有限公司</span><span class="locale-en">Shanghai Nonconvex Intelligent Technology Co., Ltd</span></h3><p class="timeline-role"><span class="locale-zh">量化研究实习生</span><span class="locale-en">Quantitative Research Intern</span></p></div><div class="timeline-date"><span class="locale-zh">2026.02 — 2026.12<br>上海</span><span class="locale-en">2026.02 — Now<br>Shanghai</span></div></div>
+              <span class="timeline-badge"><span class="locale-zh">CURRENT / 研究主线</span><span class="locale-en">CURRENT / CORE RESEARCH</span></span>
+              <ul class="work-list">
+                <li><strong><span class="locale-zh">商品期货中频因子研究：</span><span class="locale-en">Medium-frequency factor research:</span></strong> <span class="locale-zh">基于主力合约盘口快照、3 秒级 / 分钟级行情及日频基差数据，围绕主动成交不平衡、流动性消耗、OFI、五档深度、盘口斜率、Smart Money、极值冲击簇和量价领先关系等方向设计 30+ 类因子、百余组参数。</span><span class="locale-en">Built 30+ factor classes and 100+ parameter configurations from depth snapshots, 3-second/minute bars and daily basis data, spanning active-trade imbalance, liquidity consumption, OFI, order-book shape, Smart Money, shock clusters and volume-price lead-lag.</span></li>
+                <li><strong><span class="locale-zh">商品期货策略研究：</span><span class="locale-en">Commodity futures strategies:</span></strong> <span class="locale-zh">搭建信号标准化、非线性仓位映射、波动率目标、WMA / EMA 平滑、hump 防抖、期限结构 carry 和执行延迟模块，覆盖约 62 个商品品种；最佳策略组合成本后年化 Sharpe 3.50。</span><span class="locale-en">Built signal normalization, nonlinear sizing, volatility targeting, WMA / EMA smoothing, hump debouncing, term-structure carry and execution-lag modules across approximately 62 products; best cost-adjusted backtest Sharpe: 3.50.</span></li>
+                <li><strong><span class="locale-zh">股指期货策略研究：</span><span class="locale-en">Index futures strategies:</span></strong> <span class="locale-zh">针对中证 1000 股指期货（IM）构建 5 分钟策略与回测框架，加入 EVT / gap 事件控制、急跌保护与恢复逻辑；最佳组合年化 Sharpe 3.81，最大回撤约 5.19%。</span><span class="locale-en">Built a 5-minute CSI 1000 index futures framework with EVT / gap event controls, crash protection and recovery; best configuration reached 3.81 annualized Sharpe with approximately 5.19% maximum drawdown.</span></li>
+                <li><strong><span class="locale-zh">双策略实盘系统：</span><span class="locale-en">Dual-strategy live system:</span></strong> <span class="locale-zh">打通分钟信号接收、5 分钟聚合、动态资金分配、整数手数转换和 Cap’n Proto / LZ4 / ZMQ 母单发送，加入持仓核验、断线重连、Kafka 告警和故障熔断，按约 1,200 万元策略本金运行。</span><span class="locale-en">Shipped an end-to-end live path from minute-level signals to 5-minute aggregation, capital allocation, integer sizing and Cap’n Proto / LZ4 / ZMQ parent orders, with reconciliation, recovery, Kafka alerting and fail-closed safeguards; operated with about RMB 12M strategy capital.</span></li>
+              </ul>
+              <div class="metric-strip"><span class="metric">SHARPE 3.81</span><span class="metric">62 PRODUCTS</span><span class="metric">RMB 12M</span></div>
+            </div>
+          </article>
+
+          <article class="timeline-item reveal" data-tags="research strategy">
+            <span class="timeline-dot" aria-hidden="true"></span>
+            <div class="timeline-card">
+              <div class="timeline-top"><div><h3 class="timeline-company"><span class="locale-zh">衍合投资管理（青岛）有限公司</span><span class="locale-en">Yanhe Fund Co., Ltd</span></h3><p class="timeline-role"><span class="locale-zh">量化研究实习生</span><span class="locale-en">Quantitative Research Intern</span></p></div><div class="timeline-date"><span class="locale-zh">2025.03 — 2025.06<br>上海</span><span class="locale-en">2025.03 — 2025.06<br>Shanghai</span></div></div>
+              <ul class="work-list"><li><strong><span class="locale-zh">策略研究：</span><span class="locale-en">Strategy research:</span></strong> <span class="locale-zh">开发基于 KNN 的股指期货下单择时策略，以历史因子欧式距离筛选相似行情片段，预测开盘前 10 分钟价格走势，并用二进制染色体编码设计遗传算法因子组合优化器。</span><span class="locale-en">Developed a KNN-based index-futures timing strategy using Euclidean similarity between factor states, and designed a binary-encoded genetic algorithm for factor-combination optimization.</span></li><li><strong><span class="locale-zh">因子研究：</span><span class="locale-en">Factor research:</span></strong> <span class="locale-zh">研究会员持仓、持仓变化、会员行为、交易量以及股票筹码收益、市场筹码收益择时和动量增强筹码收益因子。</span><span class="locale-en">Researched member-position, position-change, member-behavior and volume factors, plus chip-return, market chip-return timing and momentum-enhanced chip-return factors.</span></li></ul>
+              <div class="metric-strip"><span class="metric">KNN</span><span class="metric">GENETIC ALGORITHM</span><span class="metric">FACTOR DESIGN</span></div>
+            </div>
+          </article>
+
+          <article class="timeline-item reveal" data-tags="strategy system">
+            <span class="timeline-dot" aria-hidden="true"></span>
+            <div class="timeline-card">
+              <div class="timeline-top"><div><h3 class="timeline-company"><span class="locale-zh">崇文量化（北京）科技有限公司</span><span class="locale-en">Trove Applied Quantitative (Beijing) Technology Co., Ltd</span></h3><p class="timeline-role"><span class="locale-zh">量化研究实习生 · 线上</span><span class="locale-en">Quantitative Research Intern · Remote</span></p></div><div class="timeline-date"><span class="locale-zh">2024.06 — 2024.12</span><span class="locale-en">2024.06 — 2024.12</span></div></div>
+              <ul class="work-list"><li><span class="locale-zh">复现《ADVANCED FUTURES TRADING STRATEGIES》中的高级趋势跟踪与跨期套利策略，并在此基础上加入基于市场风险状态的动态持仓和组合权重分配。</span><span class="locale-en">Reimplemented advanced trend-following and calendar-spread strategies from <em>Advanced Futures Trading Strategies</em>, then extended the framework with risk-regime-aware position sizing and dynamic portfolio weights.</span></li></ul>
+              <div class="metric-strip"><span class="metric">TREND FOLLOWING</span><span class="metric">CALENDAR SPREAD</span><span class="metric">RISK REGIMES</span></div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" id="projects">
+        <div class="section-head reveal">
+          <div><div class="kicker">04 / PROJECTS</div><h2 class="section-title"><span class="locale-zh">从问题出发，落到结果。</span><span class="locale-en">From question<br>to outcome.</span></h2></div>
+          <p class="section-intro locale-zh">数学建模训练让我习惯先澄清目标函数，再选择模型、约束和验证方式。</p>
+          <p class="section-intro locale-en">Mathematical modeling taught me to define the objective first, then choose the model, constraints and validation path.</p>
+        </div>
+        <div class="project-grid">
+          <article class="project-card reveal">
+            <div class="project-index">PROJECT 01 / 2023.09</div>
+            <h3><span class="locale-zh">全国大学生数学建模竞赛</span><span class="locale-en">China Undergraduate Mathematical Contest in Modeling</span></h3>
+            <p><span class="locale-zh">队长 · 上海</span><span class="locale-en">Team leader · Shanghai</span></p>
+            <ul><li><span class="locale-zh">根据三年价格时间序列建立 AR 自回归模型，预测未来 7 天进货价格。</span><span class="locale-en">Built an AR model on three years of price history to forecast purchase prices for the next seven days.</span></li><li><span class="locale-zh">以近期损耗率和销量权重建立优化模型，用模拟退火求解使商超收益最大的补货量与定价策略。</span><span class="locale-en">Built a weighted-loss optimization model and used simulated annealing to find profit-maximizing restocking and pricing decisions.</span></li></ul>
+            <div class="tag-row"><span class="tag">AR model</span><span class="tag">simulated annealing</span><span class="tag">MATLAB</span></div>
+          </article>
+          <article class="project-card reveal">
+            <div class="project-index">TOOLKIT / ALWAYS ON</div>
+            <h3><span class="locale-zh">研究工具箱</span><span class="locale-en">Research toolkit</span></h3>
+            <p class="locale-zh">把数据、统计和工程工具组合起来，让研究可以快速迭代，也可以被别人复核。</p>
+            <p class="locale-en">A compact mix of data, statistics and engineering tools for fast iteration and reproducible review.</p>
+            <div class="numbers"><div class="number"><strong>Python</strong><span><span class="locale-zh">主力语言</span><span class="locale-en">primary language</span></span></div><div class="number"><strong>R</strong><span><span class="locale-zh">统计分析</span><span class="locale-en">statistical analysis</span></span></div><div class="number"><strong>Wind</strong><span><span class="locale-zh">金融数据</span><span class="locale-en">market data</span></span></div></div>
+            <div class="tag-row"><span class="tag">data analysis</span><span class="tag">backtesting</span><span class="tag">visualization</span></div>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" id="skills">
+        <div class="section-head reveal"><div><div class="kicker">05 / SKILLS</div><h2 class="section-title"><span class="locale-zh">好奇心，保持复利。</span><span class="locale-en">Curiosity compounds.</span></h2></div><p class="section-intro locale-zh">研究之外，羽毛球、摄影和旅行让我保持节奏感，也保持对新问题的敏感。</p><p class="section-intro locale-en">Outside research, badminton, photography and travel keep my rhythm—and my sensitivity to new questions.</p></div>
+        <div class="skills-grid">
+          <article class="skill-card reveal"><div class="skill-no">01 / LANGUAGE</div><h3><span class="locale-zh">语言</span><span class="locale-en">Languages</span></h3><p><span class="locale-zh">中文；英语（四、六级，托福 110）</span><span class="locale-en">Mandarin; English (CET-4/6, TOEFL 110)</span></p><div class="skill-chips"><span class="skill-chip">中文 / Mandarin</span><span class="skill-chip">EN / TOEFL 110</span></div></article>
+          <article class="skill-card reveal"><div class="skill-no">02 / STACK</div><h3><span class="locale-zh">技能</span><span class="locale-en">Tool stack</span></h3><p><span class="locale-zh">数学建模、数据分析；熟练使用 Python、R、Word、Excel、PPT、Wind。</span><span class="locale-en">Mathematical modeling and data analysis; proficient with Python, R, Word, Excel, PPT and Wind.</span></p><div class="skill-chips"><span class="skill-chip">Python</span><span class="skill-chip">R</span><span class="skill-chip">MATLAB</span><span class="skill-chip">Wind</span></div></article>
+          <article class="skill-card reveal"><div class="skill-no">03 / OFFSCREEN</div><h3><span class="locale-zh">兴趣</span><span class="locale-en">Offscreen</span></h3><p><span class="locale-zh">羽毛球、摄影、旅行。持续输入，也持续观察。</span><span class="locale-en">Badminton, photography and travel. Keep taking in the world, keep observing.</span></p><div class="skill-chips"><span class="skill-chip">badminton</span><span class="skill-chip">photography</span><span class="skill-chip">travel</span></div></article>
+        </div>
+      </section>
+
+      <section class="contact" id="contact">
+        <div class="contact-content reveal"><div><div class="kicker">06 / CONTACT</div><h2><span class="locale-zh">如果你也在研究不确定性，欢迎聊聊。</span><span class="locale-en">If you study uncertainty too,<br>let’s talk.</span></h2></div><div><p class="locale-zh">欢迎交流量化研究、期货策略、交易系统，或者任何值得被认真拆解的问题。</p><p class="locale-en">Always happy to talk about quant research, futures strategies, trading systems, or any problem worth taking apart carefully.</p><div class="contact-actions"><a class="button primary" href="mailto:26210680087@m.fudan.edu.cn">26210680087@m.fudan.edu.cn ↗</a><button class="button ghost" id="copyEmail" type="button"><span class="locale-zh">复制邮箱</span><span class="locale-en">Copy email</span></button><a class="button ghost" href="https://github.com/linsongqin/homepage-demo" target="_blank" rel="noreferrer">GitHub ↗</a></div></div></div>
+      </section>
+
+      <footer><span>© 2026 Songqin Lin</span><span class="mono"><span class="locale-zh">研究、系统与长期主义</span><span class="locale-en">research / systems / long-term thinking</span></span></footer>
+    </div>
+  </main>
+
+  <script>
+    (() => {
+      const root = document.documentElement;
+      const langToggle = document.getElementById('langToggle');
+      const themeToggle = document.getElementById('themeToggle');
+      const copyEmail = document.getElementById('copyEmail');
+      const email = '26210680087@m.fudan.edu.cn';
+
+      const savedLocale = localStorage.getItem('resume-locale');
+      const savedTheme = localStorage.getItem('resume-theme');
+      if (savedLocale === 'en' || savedLocale === 'zh') root.dataset.locale = savedLocale;
+      if (savedTheme === 'light' || savedTheme === 'dark') root.dataset.theme = savedTheme;
+
+      langToggle.addEventListener('click', () => {
+        root.dataset.locale = root.dataset.locale === 'zh' ? 'en' : 'zh';
+        root.lang = root.dataset.locale === 'zh' ? 'zh-CN' : 'en';
+        localStorage.setItem('resume-locale', root.dataset.locale);
+      });
+
+      themeToggle.addEventListener('click', () => {
+        root.dataset.theme = root.dataset.theme === 'dark' ? 'light' : 'dark';
+        localStorage.setItem('resume-theme', root.dataset.theme);
+      });
+
+      copyEmail.addEventListener('click', async () => {
+        try { await navigator.clipboard.writeText(email); } catch (error) {}
+        const original = copyEmail.innerHTML;
+        copyEmail.textContent = root.dataset.locale === 'zh' ? '已复制 ✓' : 'Copied ✓';
+        setTimeout(() => { copyEmail.innerHTML = original; }, 1600);
+      });
+
+      document.querySelectorAll('.filter').forEach((button) => {
+        button.addEventListener('click', () => {
+          document.querySelectorAll('.filter').forEach((item) => item.classList.remove('active'));
+          button.classList.add('active');
+          const target = button.dataset.filter;
+          document.querySelectorAll('.timeline-item').forEach((item) => {
+            const visible = target === 'all' || item.dataset.tags.split(' ').includes(target);
+            item.classList.toggle('is-hidden', !visible);
+          });
+        });
+      });
+
+      const observer = new IntersectionObserver((entries) => entries.forEach((entry) => {
+        if (entry.isIntersecting) { entry.target.classList.add('visible'); observer.unobserve(entry.target); }
+      }), { threshold: .12 });
+      document.querySelectorAll('.reveal').forEach((item) => observer.observe(item));
+    })();
+  </script>
+</body>
+</html>
